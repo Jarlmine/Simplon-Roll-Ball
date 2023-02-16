@@ -200,6 +200,8 @@ MonoBehaviour:
   _scoreText: {fileID: 1785978938}
   _scenario: {fileID: 11400000, guid: 008ef6932dca95e47878a6a183b8fa94, type: 2}
   _wallPrefab: {fileID: 7884454211581300893, guid: 81d2cf16b92ebf842a42c8f1fbb54125, type: 3}
+  _particle: {fileID: 0}
+  followPlayer: {fileID: 0}
 --- !u!54 &379344880
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -822,7 +824,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -1196,6 +1198,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2258616972736765384, guid: 0d522dccbaa8ea342b905bbb1c23d00c, type: 3}
+      propertyPath: _scoreText
+      value: 
+      objectReference: {fileID: 1785978938}
     - target: {fileID: 2440555233216487512, guid: 0d522dccbaa8ea342b905bbb1c23d00c, type: 3}
       propertyPath: m_RootOrder
       value: 7

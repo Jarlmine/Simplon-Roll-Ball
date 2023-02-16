@@ -4,17 +4,26 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using Unity.VisualScripting;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
     private Rigidbody _rigidbody;
     private int ScoreValue;
-    private float _speed = 10.0f;
+    private float _speed = 0.5f;
     [SerializeField] private TMP_Text _scoreText;
     [SerializeField] private ScenarioData _scenario;
     [SerializeField] private GameObject _wallPrefab;
     public delegate void MessageEvent();
     public static event MessageEvent ObjetToucher;
+    public delegate void Particule();
+    public static event Particule PlayParticule;
+    [SerializeField]private ParticleSystem _particle;
+    [SerializeField] private GameObject followPlayer;
+    private float movementX;
+    private float movementY;
+
+
     //private bool _reset = false;
     void Start()
     {
@@ -27,22 +36,32 @@ public class Player : MonoBehaviour
 
 
         _rigidbody = GetComponent<Rigidbody>();
-        // if (_reset)
-        // {
-        //     _scoreText.text = "Score : 0";
-        //     _reset = false;
-        // }
         _scoreText.text = PlayerPrefs.GetString("Score");
         ScoreValue = PlayerPrefs.GetInt("ScoreValue");
     }
 
-    void Update()
+    private void Update()
     {
-        if (Input.GetAxis("Horizontal") != 0f || Input.GetAxis("Vertical") != 0f)
-        {
-            _rigidbody.AddForce(Input.GetAxis("Horizontal") * _speed * Time.deltaTime, 0f, Input.GetAxis("Vertical") * _speed * Time.deltaTime, ForceMode.Impulse);
-        }
+        Vector3 dir = new Vector3(movementX, 0f, movementY);
+        Debug.Log("dir : " + dir);
+        _rigidbody.AddForce(dir * _speed * Time.deltaTime);
     }
+
+    public void OnMove(InputValue movementvalue)
+    {
+        Vector2 movementVector = movementvalue.Get<Vector2>();
+        movementX = movementVector.x;
+        movementY = movementVector.y;
+
+    }
+
+    private void FixedUpdate()
+    {
+        Vector3 movement = new Vector3(movementX, 0.0f, movementY);
+        _rigidbody.AddForce(movement * _speed);
+        
+    }
+    
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Target_Trigger"))
@@ -90,6 +109,12 @@ public class Player : MonoBehaviour
 
 
         }
+
+        if (ScoreValue == 16)
+        {
+            SceneManager.LoadScene("EndScreen");
+        }
+
     }
 
 }
