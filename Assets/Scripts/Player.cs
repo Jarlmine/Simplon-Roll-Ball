@@ -22,6 +22,7 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject followPlayer;
     private float movementX;
     private float movementY;
+    private int FirstStart;
 
 
     //private bool _reset = false;
@@ -42,9 +43,6 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        Vector3 dir = new Vector3(movementX, 0f, movementY);
-        Debug.Log("dir : " + dir);
-        _rigidbody.AddForce(dir * _speed * Time.deltaTime);
     }
 
     public void OnMove(InputValue movementvalue)
@@ -57,6 +55,21 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
+
+        if (_rigidbody.velocity == Vector3.zero)
+        {
+            if (FirstStart < 1)
+            {
+                PlayParticule.Invoke();
+                FirstStart++;
+            }
+
+
+        }
+        else
+        { 
+            FirstStart = 0;
+        }
         Vector3 movement = new Vector3(movementX, 0.0f, movementY);
         _rigidbody.AddForce(movement * _speed);
         
@@ -70,6 +83,9 @@ public class Player : MonoBehaviour
             Destroy(other.gameObject);
             UpdateScore();
             ObjetToucher.Invoke();
+            PlayParticule.Invoke();
+
+
         }
     }
 
@@ -81,6 +97,7 @@ public class Player : MonoBehaviour
             Destroy(collision.gameObject);
             UpdateScore();
             ObjetToucher.Invoke();
+            PlayParticule.Invoke();
 
         }
     }
